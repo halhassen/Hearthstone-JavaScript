@@ -1,0 +1,59 @@
+<div ui-sref="Home">Home</div>
+<div class="container-fluid">
+	<div class="col-md-9">
+		<div class="row">
+			<div ng-repeat="class in vm.classIcons">
+				<img src="{{class.image}}" class="class-card-filter col-xs-6 rounded-circle"/>
+			</div>
+			<div id="scrollbox" frameborder="NO" border="0">
+				<div ng-repeat="card in vm.database track by $index" class="col-md-3" style="overflow: hidden;">
+					<!-- ng-attr-class checks if there is already 2 copies of a card in a deck. card-count is the true condition -->
+					<a ng-if="decklist==false && card.rarity != 'Legendary'" ng-click="vm.addToDeck(card)"><img src="{{card.art}}" ng-attr-class="{{card.count==2 && 'card-count' || 'card-in-builder'}}"></a>
+					<!-- Below is a temporary fix for checking if it's a Legendary card -->
+					<a ng-if="decklist==false && card.rarity == 'Legendary'" ng-click="vm.addToDeck(card)"><img src="{{card.art}}" ng-attr-class="{{card.count==1 && 'card-count' || 'card-in-builder'}}"></a>
+					<!-- Below checks if card is in regular card collection view -->
+					<a ng-if="decklist==true"><img src="" style="pointer-events: none;" class="card-in-builder"></a>
+					<!-- some kind of angular module that holds pages in one scroll box? -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Start Deck list -->
+		<!-- Possibly use ng-hide to switch between decks list and individual deck 
+		Submitting a deck turns it back on. Probably have that done in the Controller
+		Can use some kind of ng-class to enable the hero art with that deck!
+		When selecting an individual deck, make it splice it out of deck list, edits it, then pushes it back in
+		Alert if you try to exit screen without saving deck? -->
+
+		<!-- End Decklist -->
+
+		<!-- Start individual deck builder -->
+		<div style="float: left;">
+			<md-input-container class="deck-name-submit"><label>Deck Name</label><input type="text" ng-model="vm.deck.name"></md-input-container>
+		</div>
+		<!-- End individual deck builder -->
+
+		<label>Click me: <input type="checkbox" ng-model="decklist" ng-init="decklist=false" /></label><br/>
+		Show when checked:
+		<!-- In <span>, insert the animation for switching between decklist and single deck-->
+		<span ng-if="decklist">
+			TEST
+		</span>
+		<div class="deck-column col-md-3">
+			<!-- Lists cards when building START -->
+			<div ng-if="decklist==false" ng-repeat="card in vm.deck track by $index" class="card-in-deck col-md-12">
+				<!-- be in order of mana! -->
+				<div>
+					<!-- Fix text-wrap for cards with long names -->
+					<div ng-click="vm.removeCard(card)"><span class="card-in-deck-mana">{{card.cost}}</span> <img style="width: 20px;" src="{{card.art}}"><span style="overflow-wrap: break-word; width: 5px;color: white; font-weight: 400; font-size: .65em;">{{card.name}}</span><span class="card-in-deck-count">{{card.count}}</span>
+					</div>
+				</div>
+			</div>
+			<!-- Lists cards when building END -->	
+			<div ng-if="decklist" ng-repeat="deck in vm.deckList track by $index" class="deck-in-list">
+				ClassNameTemp -	{{deck.cards[1]}}
+			</div>
+			<md-button class="btn1 md-raised" ng-click="vm.submitDeck(vm.deck)" style="">Submit Deck</md-button>
+			
+		</div>
+	</div>

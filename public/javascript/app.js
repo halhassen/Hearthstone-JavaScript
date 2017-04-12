@@ -7,7 +7,15 @@
 		$stateProvider.state('Home',{
 			url: '/',
 			templateUrl: '/templates/home.html',
-      		controller: 'HomeController as vm'
+			controller: 'GameController as vm'
+		}).state('CardLibrary', {
+			url: '/card-database',
+			templateUrl: '/templates/cardlibrary.html',
+			controller: 'CardController as vm'
+		}).state('GameStart', {
+			url: '/game-start',
+			templateUrl: '/templates/gamestart.html',
+			controller: 'GameController as vm'
 		});
 		$urlRouterProvider.otherwise('/');
 		
